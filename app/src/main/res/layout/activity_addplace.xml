@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context=".AddPlaceActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/homebg"
+        android:scaleType="centerCrop"
+
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="NHẬP THÔNG TIN ĐỊA ĐIỂM"
+        android:textColor="@color/light"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/josefinsans_bold"/>
+    <Button
+        android:id="@+id/btn_show"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="8dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+
+
+        android:background="@drawable/buttonstyle"
+        android:fontFamily="@font/josefinsans_bold"
+        android:text="Back"
+
+
+        android:layout_marginLeft="5dp"
+        android:textColor="#3455bc"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"/>
+
+
+    <!--<ImageView-->
+    <!--android:id="@+id/imageView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:src="@drawable/home-2-bg"-->
+    <!--android:scaleType="centerCrop"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_show"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        >
+
+        <EditText
+            android:id="@+id/edtId"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_white"
+            android:fontFamily="@font/josefinsans_bold"
+            android:hint="Nhập  "
+            android:paddingStart="10dp"
+            android:textColor="@color/black"
+
+
+            />
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_white"
+            android:fontFamily="@font/josefinsans_bold"
+            android:hint="Name"
+            android:paddingStart="10dp"
+            android:textColor="@color/black"
+
+            />
+
+        <EditText
+            android:id="@+id/edit_phone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_white"
+            android:fontFamily="@font/josefinsans_bold"
+            android:hint="PhoneNumber"
+            android:paddingStart="10dp"
+            android:textColor="@color/black"
+
+            />
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/edit_note"
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_white"
+            android:fontFamily="@font/josefinsans_bold"
+            android:hint="Comment"
+            android:paddingStart="10dp"
+
+            android:textColor="@color/black" />
+
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="@font/josefinsans_bold"
+            android:text="Save"
+            android:textSize="22dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/bg"
+
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

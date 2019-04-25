@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/lnlevel"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:id="@+id/tv_id"
+            android:text="1"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/bg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:fontFamily="@font/josefinsans_bold"
+            android:background="@drawable/rounded_white"/>
+    </LinearLayout>
+    <LinearLayout
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:textColor="@color/light"
+        android:layout_toRightOf="@+id/lnlevel">
+        <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Nguyen Minh Man"
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/colorRed_A400"/>
+        <TextView
+            android:textSize="12sp"
+            android:text="215425830"
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/light"/>
+
+        <TextView
+            android:textSize="12sp"
+            android:text="null"
+            android:id="@+id/tv_noted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/light"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fb_remove"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@android:drawable/ic_delete"
+            app:fabSize="mini"
+            android:background="@null"
+            app:backgroundTint="@android:color/transparent"
+            android:elevation="0dp"
+            app:elevation="0dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fb_call"
+            android:layout_width="686dp"
+
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="true"
+            android:elevation="0dp"
+            android:src="@android:drawable/sym_action_call"
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            app:fabSize="mini" />
+    </LinearLayout>
+</RelativeLayout>
