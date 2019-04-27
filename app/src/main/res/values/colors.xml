@@ -13,4 +13,5 @@
     <color name="colorRed_A400">#FF1744</color>
     <color name="my_spinner_text_color">#f8f9fa</color>
     <color name="black">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

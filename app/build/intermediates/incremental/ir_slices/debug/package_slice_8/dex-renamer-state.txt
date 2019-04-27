@@ -1,0 +1,4 @@
+#Sat Apr 27 22:04:24 ICT 2019
+base.0=E\:\\GitUploadAndroid\\HotPlace2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\8
+path.0=classes.dex
+renamed.0=classes.dex
