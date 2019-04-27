@@ -51,6 +51,11 @@ public class ListPlace extends AppCompatActivity {
             listView.setSelection(customAdapter.getCount() - 1);
         }
     }
+
+//    public static void createTable() {
+//        customAdapter.notifyDataSetChanged();
+//    }
+
 }
 
 

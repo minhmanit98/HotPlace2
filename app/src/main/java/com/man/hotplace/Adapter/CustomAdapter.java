@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.man.hotplace.Data.Data_Place;
 import com.man.hotplace.MapsActivityResult;
 import com.man.hotplace.Model.Place;
+import com.man.hotplace.ListPlace;
 import com.man.hotplace.R;
 
 import java.util.List;
@@ -98,6 +99,9 @@ public class CustomAdapter extends ArrayAdapter<Place> {
             public void onClick(View v) {
                 Place place = listPlace.get(position);
                 dbPlace.removeId(place.getId());
+                listPlace.remove(position);
+                notifyDataSetChanged();
+//                ListPlace.createTable();
                 Toast.makeText(getContext(),
                         "Đã xóa " + place.getId(), Toast.LENGTH_SHORT)
                         .show();
