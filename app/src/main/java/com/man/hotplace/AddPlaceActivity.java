@@ -19,6 +19,7 @@ public class AddPlaceActivity extends AppCompatActivity {
     Data_Place data_place;
     String longitude ;
     String latitude ;
+    private static boolean added;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class AddPlaceActivity extends AppCompatActivity {
         setControls();
         data_place = new Data_Place(this);
         Intent intent = this.getIntent();
+        added = false;
 
 
         longitude= intent.getStringExtra("longitude");
@@ -38,8 +40,9 @@ public class AddPlaceActivity extends AppCompatActivity {
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddPlaceActivity.this,MapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(AddPlaceActivity.this,MapsActivity.class);
+//                startActivity(intent);
+                finish();
             }
 
         });
@@ -48,6 +51,7 @@ public class AddPlaceActivity extends AppCompatActivity {
             public void onClick(View v) {
                  place =new Place(edtId.getText().toString(),edtTenDiaDiem.getText().toString(),edtMota.getText().toString(),edtSdt.getText().toString(),longitude,latitude);
                 data_place.addPlace(place);
+                added = true;
                 Toast.makeText(getApplicationContext(),"Thêm "+edtTenDiaDiem.getText().toString()+" thành công",Toast.LENGTH_SHORT).show();
 
             }
@@ -63,5 +67,9 @@ public class AddPlaceActivity extends AppCompatActivity {
         edtMota =(EditText) findViewById(R.id.edit_note);
         edtSdt=(EditText) findViewById(R.id.edit_phone);
 
+    }
+
+    public static boolean getAdded(){
+        return added;
     }
 }

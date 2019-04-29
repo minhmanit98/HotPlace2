@@ -31,13 +31,13 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAhsp1sI60Pf5YpMXku6PgCPd-xULWbUvU" />
+            android:value="AIzaSyDjyKm0-GwZqZmHXD-hPWFIWTSBPw9YTEE" />
 
         <activity android:name=".AddPlaceActivity"></activity>
         <activity android:name=".ListPlace" />
         <activity android:name=".MapsActivityResult"></activity>
         <activity
-            android:name=".MapsActivity"
+            android:name=".MapActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

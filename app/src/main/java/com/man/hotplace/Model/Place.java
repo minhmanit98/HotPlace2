@@ -7,6 +7,9 @@ public class Place {
     private String sdt;
     private String longitude, latitude;
 
+    public Place() {
+    }
+
     public Place(String id, String tenDiaDiem, String moTa, String sdt, String longitude, String latitude) {
         this.id = id;
         this.tenDiaDiem = tenDiaDiem;
