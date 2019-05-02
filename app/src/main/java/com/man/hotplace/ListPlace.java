@@ -12,15 +12,20 @@ import android.widget.ListView;
 
 import com.man.hotplace.Adapter.CustomAdapter;
 import com.man.hotplace.Data.Data_Place;
-import com.man.hotplace.Fragments.ListPlaceFragment;
+
 import com.man.hotplace.Model.Place;
+import com.man.hotplace.Model.PlaceInfo;
 
 import java.util.List;
 
 public class ListPlace extends AppCompatActivity {
 
+    private ListView listView;
+    private List<PlaceInfo> listPlace;
+    private Data_Place data_place;
+    private CustomAdapter customAdapter;
     private Button btrefresh, btnBack;
-    ListPlaceFragment listPlaceFragment = new ListPlaceFragment();
+
 
 
     @Override
@@ -30,17 +35,20 @@ public class ListPlace extends AppCompatActivity {
 
         btrefresh = (Button) findViewById(R.id.btrefresh);
         btnBack = (Button) findViewById(R.id.btnBack);
-        RunFragment(listPlaceFragment);
+        listView = (ListView) findViewById(R.id.lv_place);
+        data_place = new Data_Place(this);
+        listPlace = data_place.getPlace();
 
 
-//        setAdapter();
+
+        setAdapter();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(ListPlace.this,MapsActivity.class);
 //                startActivity(intent);
-//                finish();
+                finish();
             }
 
         });
@@ -48,34 +56,22 @@ public class ListPlace extends AppCompatActivity {
         btrefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunFragment(listPlaceFragment);
+                setAdapter();
             }
         });
 
     }
 
-//    private void setAdapter() {
-//        if (customAdapter == null) {
-//            customAdapter = new CustomAdapter(this, R.layout.item_place, listPlace);
-//            listView.setAdapter(customAdapter);
-//        } else {
-//            customAdapter.notifyDataSetChanged();
-//            listView.setSelection(customAdapter.getCount() - 1);
-//        }
-//    }
-    public void RunFragment(Fragment fragment) {
-
-        FragmentManager fmgr = getSupportFragmentManager();
-
-        FragmentTransaction ft = fmgr.beginTransaction();
-
-        ft.replace(R.id.container_body, fragment);
-
-        ft.commit();
-
-
-
+    private void setAdapter() {
+        if (customAdapter == null) {
+            customAdapter = new CustomAdapter(this, R.layout.item_place, listPlace);
+            listView.setAdapter(customAdapter);
+        } else {
+            customAdapter.notifyDataSetChanged();
+            listView.setSelection(customAdapter.getCount() - 1);
+        }
     }
+
 }
 
 

@@ -4,32 +4,53 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 /**
  * Created by User on 10/2/2017.
  */
 
 public class PlaceInfo {
 
+    private String id = "0";
     private String name;
     private String address;
     private String phoneNumber;
-    private String id;
     private Uri websiteUri;
     private LatLng latlng;
     private float rating;
     private String attributions;
 
-    public PlaceInfo(String name, String address, String phoneNumber, String id, Uri websiteUri,
+    public PlaceInfo(String name, String address, String phoneNumber, Uri websiteUri,
                      LatLng latlng, float rating, String attributions) {
+//        List<PlaceInfo> listPlace;
+//        int temp = listPlace.size();
+//        temp++;
+//        this.id = String.valueOf(temp);
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.id = id;
         this.websiteUri = websiteUri;
         this.latlng = latlng;
         this.rating = rating;
         this.attributions = attributions;
     }
+
+//    public PlaceInfo(String name, String address, String phoneNumber, String websiteUri,
+//                     String latlng, String rating, String attributions) {
+//        this.name = name;
+//        this.address = address;
+//        this.phoneNumber = phoneNumber;
+//        this.websiteUri = Uri.parse(websiteUri);
+//        latlng = latlng.replace("lat/lng: (","");
+//        latlng = latlng.replace("lat/lng: )","");
+//        String[] latlong =  latlng.split(",");
+//        double latitude = Double.parseDouble(latlong[0]);
+//        double longitude = Double.parseDouble(latlong[1]);
+//        this.latlng = new LatLng(latitude,longitude);
+//        this.rating = Float.parseFloat(rating);
+//        this.attributions = attributions;
+//    }
 
     public PlaceInfo() {
 
@@ -102,10 +123,10 @@ public class PlaceInfo {
     @Override
     public String toString() {
         return "PlaceInfo{" +
+                ", id='" + id + '\'' +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", id='" + id + '\'' +
                 ", websiteUri=" + websiteUri +
                 ", latlng=" + latlng +
                 ", rating=" + rating +

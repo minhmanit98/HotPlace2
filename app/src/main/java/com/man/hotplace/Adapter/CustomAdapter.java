@@ -15,26 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.man.hotplace.Data.Data_Place;
-import com.man.hotplace.Fragments.ListPlaceFragment;
 import com.man.hotplace.MapsActivityResult;
 import com.man.hotplace.Model.Place;
+import com.man.hotplace.Model.PlaceInfo;
 import com.man.hotplace.R;
 
 import java.util.List;
 
-public class CustomAdapter extends ArrayAdapter<Place> {
+public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
 
     private Context context;
     private int resource;
-    private List<Place> listPlace;
+    private List<PlaceInfo> listPlace;
 
     private Data_Place dbPlace;
-    private String getId;
+    private String getName;
     private int pos;
 
 
 
-    public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Place> objects) {
+    public CustomAdapter(@NonNull Context context, int resource, @NonNull List<PlaceInfo> objects) {
 
 
         super(context, resource, objects);
@@ -53,27 +53,33 @@ public class CustomAdapter extends ArrayAdapter<Place> {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_place,parent,false);
             viewHolder = new ViewHolder();
             viewHolder.tvId = (TextView) convertView.findViewById(R.id.tv_id);
-            viewHolder.tvTenDiaDiem = (TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.tvSdt = (TextView) convertView.findViewById(R.id.tv_phone);
-            viewHolder.tvMoTa = (TextView) convertView.findViewById(R.id.tv_noted);
+            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.tvAddress = (TextView) convertView.findViewById(R.id.tv_address);
+            viewHolder.tvPhoneNumber = (TextView) convertView.findViewById(R.id.tv_phone);
+            viewHolder.tvWebsiteUri = (TextView) convertView.findViewById(R.id.tv_web);
+            viewHolder.tvRating = (TextView) convertView.findViewById(R.id.tv_rating);
+            viewHolder.tvAttributions = (TextView) convertView.findViewById(R.id.tv_att);
             viewHolder.btgoi = (FloatingActionButton) convertView.findViewById(R.id.fb_call);
             viewHolder.btremove = (FloatingActionButton) convertView.findViewById(R.id.fb_remove);
             convertView.setTag(viewHolder);
         }else {
             viewHolder =(ViewHolder) convertView.getTag();
         }
-        Place place = listPlace.get(position);
+        PlaceInfo place = listPlace.get(position);
         viewHolder.tvId.setText(String.valueOf(place.getId()));
-        viewHolder.tvMoTa.setText(place.getMoTa());
-        viewHolder.tvSdt.setText(place.getSdt());
-        viewHolder.tvTenDiaDiem.setText(place.getTenDiaDiem());
+        viewHolder.tvName.setText(place.getName());
+        viewHolder.tvAddress.setText(place.getAddress());
+        viewHolder.tvPhoneNumber.setText(place.getPhoneNumber().toString());
+        viewHolder.tvWebsiteUri.setText(place.getName().toString());
+        viewHolder.tvRating.setText(String.valueOf(place.getRating()));
+        viewHolder.tvAttributions.setText(place.getAttributions());
 
         viewHolder.btgoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Place place = listPlace.get(position);
+                PlaceInfo place = listPlace.get(position);
 
-                String ssdt= place.getSdt();
+                String ssdt= place.getPhoneNumber();
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+ssdt));
                 context.startActivity(callIntent);
@@ -83,11 +89,13 @@ public class CustomAdapter extends ArrayAdapter<Place> {
         viewHolder.tvId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Place place = listPlace.get(position);
+                PlaceInfo place = listPlace.get(position);
+
 
                 Intent intent=new Intent(getContext(), MapsActivityResult.class);
-                intent.putExtra("longitude",place.getLongitude());
-                intent.putExtra("latitude", place.getLatitude());
+                intent.putExtra("longitude",place.getLatlng().longitude);
+                intent.putExtra("latitude", place.getLatlng().latitude);
+//                intent.putExtra("latlng", place.getLatlng());
                 Toast.makeText(getContext(), "Clicked" ,Toast.LENGTH_SHORT).show();
 
                 getContext().startActivity(intent);
@@ -97,14 +105,14 @@ public class CustomAdapter extends ArrayAdapter<Place> {
         viewHolder.btremove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Place place = listPlace.get(position);
-                getId = (place.getId());
+                PlaceInfo place = listPlace.get(position);
+                pos=position;
+                getName = place.getName();
 
                 try{
-                    ListPlaceFragment.data_place.removeId(getId);
-                    ListPlaceFragment.listPlace.clear(); // du lieu la 0 khong phai null
-                    ListPlaceFragment.listPlace.addAll(ListPlaceFragment.data_place.getPlace());
-                    setAdapter();
+                    dbPlace.removeNAME(getName);
+                    listPlace.remove(pos);
+                    notifyDataSetChanged();
                 }catch(Exception e1){
                     Toast.makeText(context, "lỗi = " + e1, Toast.LENGTH_SHORT).show();
                 }
@@ -121,25 +129,14 @@ public class CustomAdapter extends ArrayAdapter<Place> {
     // Tranh truong hop item list view qua nhieu se bi lag nen dung cai duoi
     // khai bao nhung view se su dung o item nay
 
-    public void setAdapter(){
-//        if (customAdapter==null){
-//            customAdapter = new CustomAdapter(getContext(),R.layout.item_list,listPlace);
-//        }
-//        lvPlace.setAdapter(customAdapter);
-//        lvPlace.setSelection(customAdapter.getCount()-1);
-        if (ListPlaceFragment.customAdapter==null){
-            ListPlaceFragment.customAdapter = new CustomAdapter(getContext(),R.layout.item_place,listPlace);
-            ListPlaceFragment.listView.setAdapter(ListPlaceFragment.customAdapter);
-        }else {
-            ListPlaceFragment.customAdapter.notifyDataSetChanged();
-            ListPlaceFragment.listView.setSelection(ListPlaceFragment.customAdapter.getCount()-1);
-        }
-    }
     public class ViewHolder{
         private TextView tvId;
-        private TextView tvTenDiaDiem;
-        private TextView tvSdt;
-        private TextView tvMoTa;
+        private TextView tvName;
+        private TextView tvAddress;
+        private TextView tvPhoneNumber;
+        private TextView tvWebsiteUri;
+        private TextView tvRating;
+        private TextView tvAttributions;
 
         private FloatingActionButton btgoi;
         private FloatingActionButton btremove;

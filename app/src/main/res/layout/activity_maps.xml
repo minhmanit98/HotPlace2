@@ -49,15 +49,15 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/ic_gps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/relLayout1"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="17dp"
         android:scaleType="centerCrop"
-        android:id="@+id/ic_gps"
-        android:src="@drawable/ic_gps"/>
+        android:src="@drawable/ic_gps" />
 
     <ImageView
         android:layout_width="40dp"
@@ -108,11 +108,21 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_marginTop="5dp"
-
             />
+
     </LinearLayout>
 
-
+    <Button
+        android:background="@drawable/buttonstyle"
+        android:fontFamily="@font/josefinsans_bold"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:id="@+id/btnGetDirection"
+        android:text="Get Direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" />
 
 
 </RelativeLayout>

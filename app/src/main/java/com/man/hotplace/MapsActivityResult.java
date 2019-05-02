@@ -35,6 +35,7 @@ public class MapsActivityResult extends AppCompatActivity implements OnMapReadyC
         String laa= intent.getStringExtra("latitude");
         lo=Double.valueOf(loo);
         la=Double.valueOf(laa);
+//        latLng = intent.getParcelableExtra("latlng");
 
 
 
@@ -45,9 +46,9 @@ public class MapsActivityResult extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng vt = new LatLng(la, lo);
-        mMap.addMarker(new MarkerOptions().position(vt).title("Vị trí"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(vt));
+        LatLng latLng = new LatLng(la, lo);
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( 17.0f ) );
     }
 

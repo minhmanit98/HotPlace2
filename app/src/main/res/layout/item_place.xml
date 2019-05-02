@@ -41,16 +41,39 @@
         <TextView
             android:textSize="12sp"
             android:text="215425830"
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/light"/>
+        <TextView
+            android:textSize="12sp"
+            android:text="215425830"
             android:id="@+id/tv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/josefinsans_bold"
             android:textColor="@color/light"/>
-
+        <TextView
+            android:textSize="12sp"
+            android:text="215425830"
+            android:id="@+id/tv_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/light"/>
+        <TextView
+            android:textSize="12sp"
+            android:text="215425830"
+            android:id="@+id/tv_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/light"/>
         <TextView
             android:textSize="12sp"
             android:text="null"
-            android:id="@+id/tv_noted"
+            android:id="@+id/tv_att"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/josefinsans_bold"
