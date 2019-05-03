@@ -29,7 +29,7 @@ public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
     private List<PlaceInfo> listPlace;
 
     private Data_Place dbPlace;
-    private String getName;
+    private String getLatlng;
     private int pos;
 
 
@@ -59,6 +59,7 @@ public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
             viewHolder.tvWebsiteUri = (TextView) convertView.findViewById(R.id.tv_web);
             viewHolder.tvRating = (TextView) convertView.findViewById(R.id.tv_rating);
             viewHolder.tvAttributions = (TextView) convertView.findViewById(R.id.tv_att);
+            viewHolder.tvRating = (TextView) convertView.findViewById(R.id.tv_rating);
             viewHolder.btgoi = (FloatingActionButton) convertView.findViewById(R.id.fb_call);
             viewHolder.btremove = (FloatingActionButton) convertView.findViewById(R.id.fb_remove);
             convertView.setTag(viewHolder);
@@ -70,7 +71,7 @@ public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
         viewHolder.tvName.setText(place.getName());
         viewHolder.tvAddress.setText(place.getAddress());
         viewHolder.tvPhoneNumber.setText(place.getPhoneNumber().toString());
-        viewHolder.tvWebsiteUri.setText(place.getName().toString());
+        viewHolder.tvWebsiteUri.setText(place.getWebsiteUri().toString());
         viewHolder.tvRating.setText(String.valueOf(place.getRating()));
         viewHolder.tvAttributions.setText(place.getAttributions());
 
@@ -95,8 +96,10 @@ public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
                 Intent intent=new Intent(getContext(), MapsActivityResult.class);
                 intent.putExtra("longitude",place.getLatlng().longitude);
                 intent.putExtra("latitude", place.getLatlng().latitude);
+                intent.putExtra("name", place.getName());
+                intent.putExtra("address", place.getAddress());
 //                intent.putExtra("latlng", place.getLatlng());
-                Toast.makeText(getContext(), "Clicked" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Clicked " + place.getLatlng().longitude +"   "+ place.getLatlng().latitude ,Toast.LENGTH_SHORT).show();
 
                 getContext().startActivity(intent);
             }
@@ -106,13 +109,13 @@ public class CustomAdapter extends ArrayAdapter<PlaceInfo> {
             @Override
             public void onClick(View v) {
                 PlaceInfo place = listPlace.get(position);
-                pos=position;
-                getName = place.getName();
+                getLatlng = place.getLatlng().toString();
+                pos = position;
 
                 try{
-                    dbPlace.removeNAME(getName);
-                    listPlace.remove(pos);
-                    notifyDataSetChanged();
+                  dbPlace.removeLatlng(getLatlng);
+                  listPlace.remove(pos);
+                  notifyDataSetChanged();
                 }catch(Exception e1){
                     Toast.makeText(context, "lỗi = " + e1, Toast.LENGTH_SHORT).show();
                 }

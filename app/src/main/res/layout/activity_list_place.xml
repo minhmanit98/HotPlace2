@@ -66,13 +66,35 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentRight="true" />
 
+    <Spinner
+        android:layout_centerHorizontal="true"
+        android:id="@+id/spn_attribute"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="5dp"
+        android:textSize="10dp"
+        android:textAlignment="center"
+        android:background="@drawable/rounded_white"
+        android:fontFamily="@font/josefinsans_bold"
+        android:layout_below="@+id/textView"
+        android:textColor="@color/black"
+        android:entries="@array/place_attribute"
+        />
+
+    android:layout_height="match_parent">
     <ListView
         android:id="@+id/lv_place"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/btrefresh"
+        android:layout_below="@+id/btnBack"
 
         ></ListView>
+
+
 
 
 

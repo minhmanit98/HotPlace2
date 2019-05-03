@@ -15,10 +15,10 @@
             android:text="1"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="50dp"
             android:textColor="@color/bg"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:fontFamily="@font/josefinsans_bold"
             android:background="@drawable/rounded_white"/>
     </LinearLayout>
@@ -26,7 +26,7 @@
         android:padding="8dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/light"
         android:layout_toRightOf="@+id/lnlevel">
         <TextView
@@ -78,6 +78,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/josefinsans_bold"
             android:textColor="@color/light"/>
+        <!--<TextView-->
+            <!--android:textSize="12sp"-->
+            <!--android:text="null"-->
+            <!--android:id="@+id/tv_cmt"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:fontFamily="@font/josefinsans_bold"-->
+            <!--android:textColor="@color/light"/>-->
 
     </LinearLayout>
     <LinearLayout

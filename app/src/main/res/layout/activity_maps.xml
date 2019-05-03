@@ -59,20 +59,20 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_gps" />
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/place_picker"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/relLayout1"
-        android:src="@drawable/ic_map"/>
+    <!--<ImageView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:id="@+id/place_picker"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_below="@+id/relLayout1"-->
+        <!--android:src="@drawable/ic_map"/>-->
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/place_picker"
+        android:layout_below="@+id/relLayout1"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
@@ -80,49 +80,48 @@
         android:src="@drawable/ic_info"/>
 
     <LinearLayout
+        android:weightSum="4"
         android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
+            android:layout_weight="1"
             android:id="@+id/btnAddplace"
             android:text="ADD PLACE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/buttonstyle"
             android:fontFamily="@font/josefinsans_bold"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="5dp"/>
+            />
 
         <Button
+            android:layout_weight="1"
             android:id="@+id/btnListPlace"
             android:text="List Place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/buttonstyle"
             android:fontFamily="@font/josefinsans_bold"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="5dp"
             />
-
+        <TextView
+            android:layout_weight="1"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_weight="1"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="@font/josefinsans_bold"
+            android:id="@+id/btnGetDirection"
+            android:text="Get Direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 
-    <Button
-        android:background="@drawable/buttonstyle"
-        android:fontFamily="@font/josefinsans_bold"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:id="@+id/btnGetDirection"
-        android:text="Get Direction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp" />
+
 
 
 </RelativeLayout>

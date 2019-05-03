@@ -4,6 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -45,6 +49,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -54,6 +59,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.man.hotplace.Adapter.PlaceAutocompleteAdapter;
+import com.man.hotplace.Data.Data_Place;
 import com.man.hotplace.Model.PlaceInfo;
 import com.man.hotplace.directionhelpers.FetchURL;
 import com.man.hotplace.directionhelpers.TaskLoadedCallback;
@@ -102,40 +108,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private PlaceInfo mPlace;
     private Marker mMarker;
+    private Marker mMarkers;
 
+    private ArrayList<Marker> markerList;
+    boolean check=true;
+
+
+
+    private static Data_Place data_place;
+//    private static ArrayList<MarkerOptions> markerOptionsArrayList = new ArrayList<MarkerOptions>();
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onMapReady: map is ready");
-        mMap = googleMap;
 
-        if (mLocationPermissionsGranted) {
-            getDeviceLocation();
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-//            mMap.addMarker(place1);
-//            mMap.addMarker(place3);
-            init();
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        data_place = new Data_Place(this);
+        markerList= new ArrayList<Marker>();
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 //                .findFragmentById(R.id.map);
@@ -145,44 +140,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         btnAddplace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, AddPlaceActivity.class);
-                Criteria criteria = new Criteria();
-                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                String bestProvider = String.valueOf(lm.getBestProvider(criteria, true)).toString();
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+
+
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage() );
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage() );
                 }
 
 
 
-                //You can still do this if you like, you might get lucky:
-                Location location = lm.getLastKnownLocation(bestProvider);
-                double latitude = 0;
-                double longitude = 0;
-                if (location != null) {
-                    Log.e("TAG", "GPS is on");
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-
-                    intent.putExtra("longitude", String.valueOf(longitude));
-                    intent.putExtra("latitude", String.valueOf(latitude));
-
-                    Toast.makeText(getApplicationContext(), String.valueOf(latitude) + String.valueOf(longitude), Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                }
-                else{
-                    //This is what you need:
-                    lm.requestLocationUpdates(bestProvider, 5000, 0, (LocationListener) MapActivity.this);
 
 
-                }
             }
 
 
@@ -202,17 +175,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         mGps = (ImageView) findViewById(R.id.ic_gps);
         mInfo = (ImageView) findViewById(R.id.place_info);
-        mPlacePicker = (ImageView) findViewById(R.id.place_picker);
+//        mPlacePicker = (ImageView) findViewById(R.id.place_picker);
 //        place1 = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
 //        place3 = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
 
         getDirection = findViewById(R.id.btnGetDirection);
+
         getDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//            if (place2 == null){
+//                Toast.makeText(getApplicationContext(), "Bạn chưa chọn vị trí đến", Toast.LENGTH_SHORT).show();
+//            }else {
+//                new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(), place2.getLatLng(), "driving"), "driving");
+//            }
 
+//            if()
 
-                new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(), place2.getLatLng(), "driving"), "driving");
+                try{
+                    for (int i=0;i<markerList.size();i++){
+                        if(markerList.get(i).isInfoWindowShown()){
+                            new FetchURL(MapActivity.this).execute(getUrl(place1.getPosition(),markerList.get(i).getPosition(), "driving"), "driving");
+
+                        }
+                    }
+                }catch (NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
+                }
 
 //                Log.d(TAG,  getUrl(place1.getPosition(), place2.getLatLng(), "driving"));
 
@@ -225,7 +214,108 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getLocationPermission();
 
     }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onMapReady: map is ready");
+        mMap = googleMap;
+//
+//        mMap = googleMap;
+//        mMap.setOnMapClickListener(this);
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                marker.showInfoWindow();
+//                if (marker!=null){
+//                    mMarker=marker;
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
+//        LatLng latLng = new LatLng();
+//        MarkerOptions options = new MarkerOptions()
+//                .position(latLng)
+//                .title(title);
+//        mMap.addMarker(options);
+
+
+        if (mLocationPermissionsGranted) {
+            getDeviceLocation();
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+            //ket noi database
+            Log.d(TAG, "Ket noi database thanh cong");
+            //select data
+            Cursor cursor = data_place.getData();
+//            cursor.moveToFirst();
+            //tao 1 mang marker
+            while (cursor.moveToNext()){
+                //lay ra toa do x,y
+                Log.d(TAG,"Toa do: " + cursor.getString(4));
+                String temp = cursor.getString(4).replace("lat/lng: (","");
+                temp = temp.replace(")","");
+                String[] latlong =  temp.split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+//                Log.d(TAG,"Toa do: lat = " + latitude);
+                double longitude = Double.parseDouble(latlong[1]);
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude));
+                // Adding Title to the Marker
+                markerOptions.title(cursor.getString(0) + " : " + cursor.getString(1));
+                // Adding colour to the markervc
+                if (cursor.getString(6).equals("Ăn uống")){
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_placefood);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b));
+                }else if(cursor.getString(6).equals("Vui chơi")){
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_placeentertainment);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b));
+                } else if(cursor.getString(6).equals("Trường học")){
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_placeschool);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b));
+                }else if(cursor.getString(6).equals("Bệnh viện")){
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_placehospital);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b));
+                }else if(cursor.getString(6).equals("Cơ quan hành chính")){
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_placeagency);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b));
+                }else {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                }
+
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                // Adding Marker to the Camera.
+                mMarkers = mMap.addMarker(markerOptions);
+                markerList.add(mMarkers);
+                Log.d(TAG, "Marker: " + markerOptions.getPosition());
+                Log.d(TAG, "Marker: " + markerOptions.getTitle());
+                // move map camera
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+//                markerOptionsArrayList.add(markerOptionsArrayList.size(),place3);
+            }
+
+            //add cac marker
+//            for (MarkerOptions marker:
+//                 markerOptionsArrayList) {
+//                Log.d(TAG, "Marker: " + marker.getTitle());
+//                mMap.addMarker(marker);
+//                Log.d(TAG, "Them marker thanh cong");
+//            }
+            data_place.close();
+//            mMap.addMarker(place1);
+//            mMap.addMarker(place3);
+            init();
+        }
+    }
     private void init(){
         Log.d(TAG, "init: initializing");
 
@@ -284,21 +374,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        mPlacePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                try {
-                    startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage() );
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage() );
-                }
-            }
-        });
+//        mPlacePicker.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//
+//                try {
+//                    startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
+//                } catch (GooglePlayServicesRepairableException e) {
+//                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage() );
+//                } catch (GooglePlayServicesNotAvailableException e) {
+//                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage() );
+//                }
+//            }
+//        });
 
         hideSoftKeyboard();
     }
@@ -311,7 +401,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                         .getPlaceById(mGoogleApiClient, place.getId());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+
+                Intent intent = new Intent(MapActivity.this,AddPlaceActivity.class);
+                intent.putExtra("placename_key",String.format("%s", place.getName()));
+                intent.putExtra("add_key",String.format("%s", place.getAddress()));
+                intent.putExtra("phonenumber_key",String.format("%s", place.getPhoneNumber()));
+                intent.putExtra("weburi_key",String.format("%s", place.getWebsiteUri()));
+                intent.putExtra("lat_key",String.valueOf(place.getLatLng().latitude));
+                intent.putExtra("long_key",String.valueOf(place.getLatLng().longitude));
+                intent.putExtra("rating_key",String.format("%s", place.getRating()));
+                intent.putExtra("attributions_key",String.format("%s", place.getAttributions()));
+                startActivity(intent);
             }
+
         }
     }
 
@@ -411,6 +513,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
+
             mMap.addMarker(options);
         }
 
@@ -555,6 +658,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
+    private void refreshMap(GoogleMap mapInstance){
+        mapInstance.clear();
     }
 }
 

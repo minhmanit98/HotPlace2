@@ -67,14 +67,20 @@ public class Data_Place extends SQLiteOpenHelper {
         values.put(PHONENUMBER, place.getPhoneNumber());
         values.put(WEBSITEURI, place.getWebsiteUri().toString());
         values.put(LATLNG, place.getLatlng().toString());
+//        Log.d(TAG,"Toa dodd: " + place.getLatlng().toString());
         values.put(RATING, String.valueOf(place.getRating()));
         values.put(ATTRIBUTIONS, place.getAttributions());
         db.insert(TABLE_NAME,null,values);
         Log.d("TT","Them thanh cong");
         db.close();
     }
-    public List<PlaceInfo> getPlace(){
-        String getPlace = "SELECT * FROM " + TABLE_NAME + "";
+    public List<PlaceInfo> getPlace(String attribution){
+        String getPlace = "";
+        if (attribution.equals("All")){
+            getPlace = "SELECT * FROM " + TABLE_NAME ;
+        }else {
+            getPlace = "SELECT * FROM " + TABLE_NAME + " WHERE ATTRIBUTIONS='" + attribution + "'";
+        }
         List<PlaceInfo> listPlace =new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(getPlace, null);
@@ -94,9 +100,9 @@ public class Data_Place extends SQLiteOpenHelper {
         db.close();
         return listPlace;
     }
-    public void removeNAME(String NAME) {
+    public void removeLatlng(String LATLNG) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from " + TABLE_NAME + " where NAME='" + NAME + "'");
+        db.execSQL("delete from " + TABLE_NAME + " where LATLNG='" + LATLNG + "'");
         db.close();
         Log.d(TAG,"RemoveNAME Successfuly");
     }
@@ -110,5 +116,12 @@ public class Data_Place extends SQLiteOpenHelper {
         sdt= cursor.getString(0);
         db.close();
         return sdt;
+    }
+
+    //Truy van co ket qua: SELECT
+    public Cursor getData (){
+        SQLiteDatabase database = getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME + "";
+        return database.rawQuery(sql,null);
     }
 }

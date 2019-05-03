@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">HotPlace</string>
-        <string name="title_activity_maps">Hot Place</string>
+    <string name="title_activity_maps">Hot Place</string>
+    <string-array name="place_att">
+        <item>Ăn uống</item>
+        <item>Vui chơi</item>
+        <item>Trường học</item>
+        <item>Bệnh viện</item>
+        <item>Cơ quan hành chính</item>
+        <item>Thuộc tính khác</item>
+    </string-array>
+    <string-array name="place_attribute">
+        <item>All</item>
+        <item>Ăn uống</item>
+        <item>Vui chơi</item>
+        <item>Trường học</item>
+        <item>Bệnh viện</item>
+        <item>Cơ quan hành chính</item>
+        <item>Thuộc tính khác</item>
+    </string-array>
 </resources>
